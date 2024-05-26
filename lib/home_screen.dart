@@ -1,16 +1,29 @@
+import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:intl/intl.dart';
 
+import 'global.dart';
 import 'model.dart';
 class Home_Screen extends StatefulWidget {
+
   const Home_Screen({super.key});
+  
 
   @override
   State<Home_Screen> createState() => _Home_ScreenState();
 }
 
 class _Home_ScreenState extends State<Home_Screen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+
+  }
   TextEditingController promptController = TextEditingController();
   static const apiKey='AIzaSyBG-nSXx31H7Of1JzXgWSBxCmY6TAX2qo0';
   final model= GenerativeModel(model: "gemini-pro", apiKey: apiKey);
@@ -40,16 +53,61 @@ class _Home_ScreenState extends State<Home_Screen> {
 
   @override
   Widget build(BuildContext context) {
+
+    mq = MediaQuery.sizeOf(context);
     return  Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("ChatBot"),
+        title: Text("Ask Me",style: TextStyle(
+          fontSize: 18,
+          color: Colors.white,
+          fontWeight: FontWeight.bold
+        ),),
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         elevation: 3,
       ),
       body: Column(
+
         children: [
+          SizedBox(height: 10,),
+          Row(
+            children: [
+              Image.asset('assets/images/logo 1.png',width: 35,),
+              Container(
+                constraints: BoxConstraints(
+                    maxWidth: mq.width * .6
+                ),
+                margin: EdgeInsets.only(
+                    bottom: mq.height * .02, left: mq.width *.02
+                ),
+                padding: EdgeInsets.symmetric(
+                  vertical: mq.height * .01, horizontal: mq.width *.02,
+                ),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(20)),
+                child: AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                      'Hello, How Can I Help You',
+                      textStyle: const TextStyle(
+                        fontSize: 15.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      speed: const Duration(milliseconds: 200),
+                    ),
+                  ],
+
+                  totalRepeatCount: 1,
+                  pause: const Duration(milliseconds: 1000),
+                  displayFullTextOnTap: true,
+                  stopPauseOnTap: true,
+                ),
+
+              ),
+            ],
+          ),
           Expanded(child: ListView.builder(
               itemCount:prompt.length ,
               itemBuilder: (context,index){
@@ -97,6 +155,7 @@ class _Home_ScreenState extends State<Home_Screen> {
               ],
             ),
           ),
+          SizedBox(height: 20,),
         ],
       ),
     );
@@ -104,7 +163,6 @@ class _Home_ScreenState extends State<Home_Screen> {
 
   Container UserPrompt({required final bool isPrompt, required String message, required String date}) {
     return Container(
-
       decoration: BoxDecoration(
         color: isPrompt ? Colors.white : Colors.white,
         border: Border.all(color: Colors.black),
@@ -121,21 +179,53 @@ class _Home_ScreenState extends State<Home_Screen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+
                 // for prompt and response
-                Text(message,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                  fontWeight:isPrompt?FontWeight.normal:FontWeight.bold,
-                fontSize:18,
-                  color: isPrompt ? Colors.black:Colors.black,
-                ),
+                // AnimatedTextKit(
+                //   animatedTexts: [
+                //     TypewriterAnimatedText(
+                //       message,
+                //       textStyle: const TextStyle(
+                //         fontSize: 18.0,
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //       speed: const Duration(milliseconds: 50),
+                //     ),
+                //   ],
+                //
+                //   totalRepeatCount: 1,
+                //   pause: const Duration(milliseconds: 1000),
+                //   displayFullTextOnTap: true,
+                //   stopPauseOnTap: true,
+                // ),
+
+                InkWell(
+                  onLongPress: (){
+                    FlutterClipboard.copy(message).then(( value ) {
+                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Text copied",style: TextStyle(
+                        color: Colors.white,
+
+                      ),),backgroundColor: Colors.black,
+                      ),
+                      );
+
+                    });
+                  },
+                  child: Text(message,
+                    // textAlign: TextAlign.center,
+                    style: TextStyle(
+                    fontWeight:isPrompt?FontWeight.normal:FontWeight.bold,
+                  fontSize:15,
+                    color: isPrompt ? Colors.black:Colors.black,
+                  ),
+                  ),
                 ),
               //   for prompt and response time
                 Text(
                 date,
                   style: TextStyle(
 
-                  fontSize:15,
+                  fontSize:13,
                   color: isPrompt ? Colors.black:Colors.black,
                 ),
                 ),
