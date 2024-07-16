@@ -1,5 +1,6 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:clipboard/clipboard.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -68,46 +69,46 @@ class _Home_ScreenState extends State<Home_Screen> {
         elevation: 3,
       ),
       body: Column(
-
         children: [
+
           SizedBox(height: 10,),
-          Row(
-            children: [
-              Image.asset('assets/images/logo 1.png',width: 35,),
-              Container(
-                constraints: BoxConstraints(
-                    maxWidth: mq.width * .6
-                ),
-                margin: EdgeInsets.only(
-                    bottom: mq.height * .02, left: mq.width *.02
-                ),
-                padding: EdgeInsets.symmetric(
-                  vertical: mq.height * .01, horizontal: mq.width *.02,
-                ),
-                decoration: BoxDecoration(
-                    border: Border.all(color: Colors.black),
-                    borderRadius: BorderRadius.circular(20)),
-                child: AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                      'Hello, How Can I Help You',
-                      textStyle: const TextStyle(
-                        fontSize: 15.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      speed: const Duration(milliseconds: 200),
-                    ),
-                  ],
-
-                  totalRepeatCount: 1,
-                  pause: const Duration(milliseconds: 1000),
-                  displayFullTextOnTap: true,
-                  stopPauseOnTap: true,
-                ),
-
-              ),
-            ],
-          ),
+          // Row(
+          //   children: [
+          //     Image.asset('assets/images/logo 1.png',width: 35,),
+          //     Container(
+          //       constraints: BoxConstraints(
+          //           maxWidth: mq.width * .6
+          //       ),
+          //       margin: EdgeInsets.only(
+          //           bottom: mq.height * .02, left: mq.width *.02
+          //       ),
+          //       padding: EdgeInsets.symmetric(
+          //         vertical: mq.height * .01, horizontal: mq.width *.02,
+          //       ),
+          //       decoration: BoxDecoration(
+          //           border: Border.all(color: Colors.black),
+          //           borderRadius: BorderRadius.circular(20)),
+          //       child: AnimatedTextKit(
+          //         animatedTexts: [
+          //           TypewriterAnimatedText(
+          //             'Hello, How Can I Help You',
+          //             textStyle: const TextStyle(
+          //               fontSize: 15.0,
+          //               fontWeight: FontWeight.bold,
+          //             ),
+          //             speed: const Duration(milliseconds: 200),
+          //           ),
+          //         ],
+          //
+          //         totalRepeatCount: 1,
+          //         pause: const Duration(milliseconds: 1000),
+          //         displayFullTextOnTap: true,
+          //         stopPauseOnTap: true,
+          //       ),
+          //
+          //     ),
+          //   ],
+          // ),
           Expanded(child: ListView.builder(
               itemCount:prompt.length ,
               itemBuilder: (context,index){
@@ -122,7 +123,7 @@ class _Home_ScreenState extends State<Home_Screen> {
                   flex: 20,
                   child: TextField(
                     controller: promptController,
-                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.start,
                   onTapOutside: (e) => FocusScope.of(context).unfocus(),
                   style: TextStyle(
                     color: Colors.black,
